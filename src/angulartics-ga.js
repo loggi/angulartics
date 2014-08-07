@@ -40,6 +40,8 @@ angular.module('angulartics.google.analytics', ['angulartics'])
     // GA requires that eventValue be an integer, see:
     // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#eventValue
     // https://github.com/luisfarzati/angulartics/issues/81
+    var objToSend = {};
+
     if(properties.value) {
       var parsed = parseInt(properties.value, 10);
       properties.value = isNaN(parsed) ? 0 : parsed;
@@ -49,11 +51,31 @@ angular.module('angulartics.google.analytics', ['angulartics'])
       _gaq.push(['_trackEvent', properties.category, action, properties.label, properties.value, properties.noninteraction]);
     }
     else if (window.ga) {
-      if (properties.noninteraction) {
-        ga('send', 'event', properties.category, action, properties.label, properties.value, {nonInteraction: 1});
-      } else {
-        ga('send', 'event', properties.category, action, properties.label, properties.value);
+      if (properties.category) {
+        objToSend.eventCategory = properties.category;
       }
+
+      if (action) {
+        objToSend.eventAction = action;
+      }
+
+      if (properties.label) {
+        objToSend.eventLabel = properties.label;
+      }
+
+      if (properties.value) {
+        objToSend.eventValue = properties.value;
+      }
+
+      if (properties.hitCallback) {
+        objToSend.hitCallback = properties.hitCallback;
+      }
+
+      if (properties.noninteraction) {
+        objToSend.nonInteraction = 1;
+      }
+
+      ga('send', 'event', objToSend);
     }
   });
 
