@@ -47,10 +47,7 @@ angular.module('angulartics.google.analytics', ['angulartics'])
       properties.value = isNaN(parsed) ? 0 : parsed;
     }
 
-    if (window._gaq) {
-      _gaq.push(['_trackEvent', properties.category, action, properties.label, properties.value, properties.noninteraction]);
-    }
-    else if (window.ga) {
+    if (window.ga) {
       if (properties.category) {
         objToSend.eventCategory = properties.category;
       }
@@ -75,7 +72,22 @@ angular.module('angulartics.google.analytics', ['angulartics'])
         objToSend.nonInteraction = 1;
       }
 
+      // TODO: main repo is about to merge this, when the do,
+      // we will kill our fork
+
+      // add custom dimensions and metrics
+      for(var idx = 1; idx<=20;idx++) {
+        if(properties['dimension' +idx.toString()]) {
+          eventOptions['dimension' +idx.toString()] = properties['dimension' +idx.toString()];
+        }
+        if(properties['metric' +idx.toString()]) {
+          eventOptions['metric' +idx.toString()] = properties['metric' +idx.toString()];
+        }
+      }
+
       ga('send', 'event', objToSend);
+    } else if (window._gaq) {
+      _gaq.push(['_trackEvent', properties.category, action, properties.label, properties.value, properties.noninteraction]);
     }
   });
 
