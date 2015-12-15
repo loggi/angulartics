@@ -1,7 +1,7 @@
 {
-  "name": "angulartics",
+  "name": "@loggi/angulartics",
   "description": "Vendor-agnostic web analytics for AngularJS applications",
-  "version": "0.16.1.1-loggi",
+  "version": "0.17",
   "filename": "./src/angulartics.min.js",
   "homepage": "http://luisfarzati.github.io/angulartics",
   "author": {
